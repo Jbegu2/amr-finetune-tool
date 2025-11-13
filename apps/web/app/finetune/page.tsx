@@ -122,10 +122,9 @@ function makeAdaptiveTicks(
 
 // --------------------------- Styles ---------------------------
 const S: any = {
-  legendDot: (bg: string) => React.CSSProperties;
-  centerBtn: React.CSSProperties;
-  tooltip: React.CSSProperties;
-} = {
+  page: { padding: 16, fontFamily: "Inter, system-ui, Arial", color: "#111" },
+  grid: { display: "grid", gridTemplateColumns: "520px 1fr", gap: 16 },
+  ...
   page: { padding: 16, fontFamily: "Inter, system-ui, Arial", color: "#111" },
   grid: { display: "grid", gridTemplateColumns: "520px 1fr", gap: 16 },
   panel: { border: "1px solid #e5e7eb", borderRadius: 12, padding: 12, background: "#fff" },
