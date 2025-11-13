@@ -121,7 +121,7 @@ function makeAdaptiveTicks(
 }
 
 // --------------------------- Styles ---------------------------
-const S: Record<string, React.CSSProperties> & {
+const S: any = {
   legendDot: (bg: string) => React.CSSProperties;
   centerBtn: React.CSSProperties;
   tooltip: React.CSSProperties;
