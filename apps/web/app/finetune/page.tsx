@@ -124,9 +124,6 @@ function makeAdaptiveTicks(
 const S: any = {
   page: { padding: 16, fontFamily: "Inter, system-ui, Arial", color: "#111" },
   grid: { display: "grid", gridTemplateColumns: "520px 1fr", gap: 16 },
-  ...
-  page: { padding: 16, fontFamily: "Inter, system-ui, Arial", color: "#111" },
-  grid: { display: "grid", gridTemplateColumns: "520px 1fr", gap: 16 },
   panel: { border: "1px solid #e5e7eb", borderRadius: 12, padding: 12, background: "#fff" },
   h2: { margin: 0, marginBottom: 12 },
   sectionTitle: { fontWeight: 600, marginBottom: 8 },
@@ -157,7 +154,7 @@ const S: any = {
     padding: "8px 12px",
     cursor: "pointer",
     width: 80,
-    textAlign: "center",
+    textAlign: "center" as const,
   },
   btnRed: {
     background: "#dc2626",
@@ -167,11 +164,11 @@ const S: any = {
     padding: "8px 12px",
     cursor: "pointer",
   },
-  table: { width: "100%", borderCollapse: "collapse", fontSize: 12 },
-  th: { textAlign: "left", borderBottom: "1px solid #e5e7eb", padding: "6px 4px" },
+  table: { width: "100%", borderCollapse: "collapse" as const, fontSize: 12 },
+  th: { textAlign: "left" as const, borderBottom: "1px solid #e5e7eb", padding: "6px 4px" },
   td: { borderTop: "1px solid #f3f4f6", padding: "6px 4px" },
   legendDot: (bg: string) => ({
-    display: "inline-block",
+    display: "inline-block" as const,
     width: 10,
     height: 10,
     borderRadius: 10,
@@ -179,9 +176,9 @@ const S: any = {
     marginRight: 6,
   }),
   tooltip: {
-    position: "fixed",
-    display: "none",
-    pointerEvents: "none",
+    position: "fixed" as const,
+    display: "none" as const,
+    pointerEvents: "none" as const,
     background: "rgba(0,0,0,0.85)",
     color: "#fff",
     fontSize: 12,
@@ -190,7 +187,7 @@ const S: any = {
     zIndex: 50,
   },
   centerBtn: {
-    position: "absolute",
+    position: "absolute" as const,
     right: 12,
     bottom: 12,
     background: "#ffffff",
@@ -391,7 +388,7 @@ export default function FineTuneWeb() {
     raw: "#1f77b4",
     drop: "#000000",
     pick: "#16a34a",
-    approach: "#ea8533ff",
+    approach: "#9333ea",
     curve: "#dc2626",
     axis: "#6b7280",
   };
@@ -955,7 +952,7 @@ function SavedTabs({ run }: { run: SavedRun }) {
           <tbody>
             {run.seq.map((p, i) => {
               const names = ["Drop (P0)", "Pick (P1)", "Approach (P2)", "Curve (P3)"];
-              const colors = ["#000000", "#16a34a", "#ea8533ff", "#dc2626"];
+              const colors = ["#000000", "#16a34a", "#9333ea", "#dc2626"];
               return (
                 <tr key={i} style={{ color: colors[i] ?? "#111" }}>
                   <td style={S.td}>{names[i] ?? `P${i}`}</td>
