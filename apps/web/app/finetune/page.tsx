@@ -29,6 +29,9 @@ type SavedRun = {
   visible?: boolean;
 };
 
+// Input state using strings
+type PointInput = { x: string; y: string; angle: string };
+
 const fmt3 = (v: number) => {
   const s = (Math.round(v * 1000) / 1000)
     .toFixed(3)
@@ -203,11 +206,11 @@ const S: any = {
 
 // --------------------------- Component ---------------------------
 export default function FineTuneWeb() {
-  // Inputs
-  const [points, setPoints] = useState<Array<{ x: number; y: number; angle: number }>>([
-    { x: Number.NaN, y: Number.NaN, angle: Number.NaN },
+  // Inputs - NOW USING STRINGS
+  const [points, setPoints] = useState<PointInput[]>([
+    { x: "", y: "", angle: "" },
   ]);
-  const [segments, setSegments] = useState<number[]>([]);
+  const [segments, setSegments] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   // Results
@@ -266,19 +269,19 @@ export default function FineTuneWeb() {
     const need = Math.max(0, points.length - 1);
     setSegments((prev) => {
       const next = prev.slice(0, need);
-      while (next.length < need) next.push(Number.NaN);
+      while (next.length < need) next.push("");
       return next;
     });
   }, [points.length]);
 
-  function setPointAt(i: number, np: Partial<PtA>) {
+  function setPointAt(i: number, np: Partial<PointInput>) {
     setPoints((prev) => prev.map((p, idx) => (idx === i ? { ...p, ...np } : p)));
   }
   function onAddPoint() {
-    if (points.length < 6) setPoints((prev) => [...prev, { x: Number.NaN, y: Number.NaN, angle: Number.NaN }]);
+    if (points.length < 6) setPoints((prev) => [...prev, { x: "", y: "", angle: "" }]);
   }
   function onClear() {
-    setPoints([{ x: Number.NaN, y: Number.NaN, angle: Number.NaN }]);
+    setPoints([{ x: "", y: "", angle: "" }]);
     setFineTuned(null);
     setSequence(null);
   }
@@ -288,7 +291,7 @@ export default function FineTuneWeb() {
   function updateSeg(i: number, s: string) {
     setSegments((prev) => {
       const cp = prev.slice();
-      cp[i] = s === "" ? Number.NaN : Number(s);
+      cp[i] = s;
       return cp;
     });
   }
@@ -302,16 +305,19 @@ export default function FineTuneWeb() {
     }
     const cleanPts: PtA[] = [];
     for (const p of points) {
-      const xx = Number(p.x),
-        yy = Number(p.y),
-        aa = Number(p.angle);
+      const xx = Number(p.x);
+      const yy = Number(p.y);
+      const aa = Number(p.angle);
       if (!Number.isFinite(xx) || !Number.isFinite(yy) || !Number.isFinite(aa)) {
         setError("All points require numeric X, Y, Angle.");
         return;
       }
       cleanPts.push({ x: xx, y: yy, angle: aa });
     }
-    const segClean = segments.map((v) => (Number.isFinite(v) ? v : 0));
+    const segClean = segments.map((v) => {
+      const num = Number(v);
+      return Number.isFinite(num) ? num : 0;
+    });
 
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_ORIGIN}/fine_tune/run`, {
@@ -334,13 +340,17 @@ export default function FineTuneWeb() {
     }
   }
 
-  // Plot data
+  // Plot data - convert string inputs to numbers for display
   const rawPts: Pt[] = useMemo(
     () =>
-      points.map((p) => ({
-        x: Number.isFinite(p.x) ? Number(p.x) : 0,
-        y: Number.isFinite(p.y) ? Number(p.y) : 0,
-      })),
+      points.map((p) => {
+        const x = Number(p.x);
+        const y = Number(p.y);
+        return {
+          x: Number.isFinite(x) ? x : 0,
+          y: Number.isFinite(y) ? y : 0,
+        };
+      }),
     [points]
   );
   const seqPts: Pt[] = useMemo(
@@ -499,40 +509,31 @@ export default function FineTuneWeb() {
                 <div style={{ fontSize: 12, color: "#6b7280", width: 24, textAlign: "right" }}>{i + 1}</div>
 
                 <input
-                  type="number"
+                  type="text"
+                  inputMode="decimal"
                   placeholder="X (m)"
-                  value={Number.isFinite(p.x) ? String(p.x) : ""}
-                  onChange={(e) =>
-                    setPointAt(i, {
-                      x: e.currentTarget.value === "" ? Number.NaN : Number(e.currentTarget.value),
-                    })
-                  }
+                  value={p.x}
+                  onChange={(e) => setPointAt(i, { x: e.currentTarget.value })}
                   autoComplete="off"
                   data-lpignore="true"
                   style={S.input}
                 />
                 <input
-                  type="number"
+                  type="text"
+                  inputMode="decimal"
                   placeholder="Y (m)"
-                  value={Number.isFinite(p.y) ? String(p.y) : ""}
-                  onChange={(e) =>
-                    setPointAt(i, {
-                      y: e.currentTarget.value === "" ? Number.NaN : Number(e.currentTarget.value),
-                    })
-                  }
+                  value={p.y}
+                  onChange={(e) => setPointAt(i, { y: e.currentTarget.value })}
                   autoComplete="off"
                   data-lpignore="true"
                   style={S.input}
                 />
                 <input
-                  type="number"
+                  type="text"
+                  inputMode="decimal"
                   placeholder="Angle (deg)"
-                  value={Number.isFinite(p.angle) ? String(p.angle) : ""}
-                  onChange={(e) =>
-                    setPointAt(i, {
-                      angle: e.currentTarget.value === "" ? Number.NaN : Number(e.currentTarget.value),
-                    })
-                  }
+                  value={p.angle}
+                  onChange={(e) => setPointAt(i, { angle: e.currentTarget.value })}
                   autoComplete="off"
                   data-lpignore="true"
                   style={{ ...S.input, width: 90 }}
@@ -554,9 +555,10 @@ export default function FineTuneWeb() {
                   <div key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
                     <div style={{ fontSize: 12, width: 16, textAlign: "right", color: "#6b7280" }}>{label}</div>
                     <input
-                      type="number"
+                      type="text"
+                      inputMode="decimal"
                       placeholder={`${label} (m)`}
-                      value={Number.isFinite(s) ? String(s) : ""}
+                      value={s}
                       onChange={(e) => updateSeg(i, e.currentTarget.value)}
                       autoComplete="off"
                       data-lpignore="true"
