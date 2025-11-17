@@ -406,7 +406,7 @@ export default function FineTuneWeb() {
   // Saved runs
   function saveCurrent() {
     if (!fineTuned || !sequence) return;
-    const name = window.prompt("Name this run:", "Station 1B");
+    const name = window.prompt("Name this run:", "Station_");
     if (!name) return;
     const id = `${Date.now()}-${Math.random()}`;
     setSaved((prev) => [{ id, name, fine: fineTuned, seq: sequence, createdAt: Date.now(), visible: false }, ...prev]);
