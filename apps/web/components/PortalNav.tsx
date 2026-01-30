@@ -74,7 +74,7 @@ export function PortalNav() {
           color: colors.textMuted,
         }}
       >
-        JB Tools Portal
+        JBB Tool Portal
       </span>
     </header>
   );

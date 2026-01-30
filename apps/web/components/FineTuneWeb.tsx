@@ -1092,7 +1092,6 @@ const SavedTabs = memo(function SavedTabs({ run }: { run: SavedRun }) {
 });
 
 // Icons
-const ABBLogo = memo(() => <svg width="120" height="40" viewBox="0 0 120 40" role="img" aria-label="ABB Logo"><rect width="120" height="40" fill={COLORS.primary} /><text x="10" y="28" fontFamily="Arial" fontSize="24" fontWeight="bold" fill="white">JBB</text></svg>);
 const FlipIcon = memo(() => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M4 8h16M16 4l4 4-4 4" /><path d="M20 16H4M8 12l-4 4 4 4" /></svg>);
 
 // Modal Components
@@ -1455,7 +1454,6 @@ export default function FineTuneWeb() {
       <ScreenReaderAnnouncer message={announcement} />
       
       <header style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, paddingBottom: 12, borderBottom: "1px solid #e5e7eb" }}>
-        <ABBLogo />
         <h1 style={{ ...S.h2, fontSize: 22, margin: 0 }}>AMR Fine-Tuning Tool</h1>
       </header>
       

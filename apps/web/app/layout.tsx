@@ -2,7 +2,7 @@ import "./globals.css";
 import { PortalNav } from "../components/PortalNav";
 
 export const metadata = {
-  title: "JB Tools Portal",
+  title: "JBB Tool Portal",
   description: "A collection of utility tools for AMR workflows",
 };
 

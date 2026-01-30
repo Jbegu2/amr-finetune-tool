@@ -9,6 +9,7 @@ import {
 
 function ToolIcon({ icon }: { icon: Tool["icon"] }) {
   if (icon === "finetune") {
+    // Ruler icon
     return (
       <svg
         width="24"
@@ -20,8 +21,114 @@ function ToolIcon({ icon }: { icon: Tool["icon"] }) {
         strokeLinecap="round"
         strokeLinejoin="round"
       >
+        <rect x="2" y="8" width="20" height="8" rx="1" />
+        <line x1="6" y1="8" x2="6" y2="12" />
+        <line x1="10" y1="8" x2="10" y2="14" />
+        <line x1="14" y1="8" x2="14" y2="12" />
+        <line x1="18" y1="8" x2="18" y2="14" />
+      </svg>
+    );
+  }
+
+  if (icon === "painkiller") {
+    // Pill/capsule icon rotated 45 degrees
+    return (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={colors.purple}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <g transform="rotate(45 12 12)">
+          <rect x="4" y="8" width="16" height="8" rx="4" />
+          <line x1="12" y1="8" x2="12" y2="16" />
+        </g>
+      </svg>
+    );
+  }
+
+  if (icon === "tracker") {
+    // Location/tracking icon
+    return (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={colors.blue}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="12" cy="12" r="10" />
         <circle cx="12" cy="12" r="3" />
-        <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24" />
+        <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
+      </svg>
+    );
+  }
+
+  if (icon === "rotation") {
+    // Rotation/transform icon
+    return (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={colors.success}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M21 12a9 9 0 1 1-9-9" />
+        <path d="M12 3v9l6 3" />
+        <path d="M21 3v6h-6" />
+      </svg>
+    );
+  }
+
+  if (icon === "checklist") {
+    // Checklist/clipboard icon
+    return (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={colors.warning}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M9 11l2 2 4-4" />
+        <path d="M9 17h6" />
+      </svg>
+    );
+  }
+
+  if (icon === "pdi") {
+    // Spreadsheet/document generator icon
+    return (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#ea580c"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <path d="M14 2v6h6" />
+        <path d="M8 13h8" />
+        <path d="M8 17h8" />
+        <path d="M8 9h2" />
       </svg>
     );
   }
@@ -53,6 +160,16 @@ function StatusBadge({ status }: { status: Tool["status"] }) {
       text: colors.textMuted,
       label: "Coming Soon",
     },
+    "coming-eventually": {
+      bg: colors.borderLight,
+      text: colors.textMuted,
+      label: "Coming Eventually",
+    },
+    "funding-cancelled": {
+      bg: colors.borderLight,
+      text: colors.textMuted,
+      label: "Funding Cancelled - TBD",
+    },
     beta: {
       bg: `${colors.warning}20`,
       text: colors.warning,
@@ -78,6 +195,25 @@ function StatusBadge({ status }: { status: Tool["status"] }) {
       {style.label}
     </span>
   );
+}
+
+function getIconBackground(icon: Tool["icon"]): string {
+  switch (icon) {
+    case "finetune":
+      return `${colors.primary}15`;
+    case "painkiller":
+      return `${colors.purple}15`;
+    case "tracker":
+      return `${colors.blue}15`;
+    case "rotation":
+      return `${colors.success}15`;
+    case "checklist":
+      return `${colors.warning}15`;
+    case "pdi":
+      return "#ea580c15";
+    default:
+      return colors.borderLight;
+  }
 }
 
 function ToolCard({ tool }: { tool: Tool }) {
@@ -112,7 +248,7 @@ function ToolCard({ tool }: { tool: Tool }) {
             width: 48,
             height: 48,
             borderRadius: 10,
-            background: isActive ? `${colors.primary}15` : colors.borderLight,
+            background: getIconBackground(tool.icon),
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

@@ -14,11 +14,11 @@ export interface Tool {
   /** Route path (relative to /tools) */
   path: string;
   /** Icon name or component identifier */
-  icon: "finetune" | "default";
+  icon: "finetune" | "painkiller" | "tracker" | "rotation" | "checklist" | "pdi" | "default";
   /** Tool category for grouping */
   category: "amr" | "utility" | "other";
   /** Whether the tool is ready for use */
-  status: "active" | "coming-soon" | "beta";
+  status: "active" | "coming-soon" | "coming-eventually" | "beta" | "funding-cancelled";
   /** Optional tags for search/filtering */
   tags?: string[];
 }
@@ -39,7 +39,61 @@ export const toolsRegistry: Tool[] = [
     status: "active",
     tags: ["amr", "layout", "points", "visualization"],
   },
-  // Add more tools here as they are developed
+  {
+    id: "painkiller",
+    name: "Thomas's Pain Killer",
+    description:
+      "Detect and identify incompatible nodes and segments for Synoas applications. Quickly diagnose configuration issues before deployment.",
+    path: "/tools/painkiller",
+    icon: "painkiller",
+    category: "utility",
+    status: "coming-soon",
+    tags: ["synoas", "nodes", "segments", "compatibility", "validation"],
+  },
+  {
+    id: "tracker",
+    name: "AMR Tracker",
+    description:
+      "Monitor and document AMR status and software versions across projects. Keep track of fleet configurations and updates.",
+    path: "/tools/tracker",
+    icon: "tracker",
+    category: "amr",
+    status: "coming-eventually",
+    tags: ["amr", "tracking", "status", "software", "documentation"],
+  },
+  {
+    id: "rotation",
+    name: "Segment-Node Rotation",
+    description:
+      "Rotate a segment of nodes around an anchor point. Input a series of nodes, select an anchor, and apply precise angular transformations.",
+    path: "/tools/rotation",
+    icon: "rotation",
+    category: "amr",
+    status: "coming-soon",
+    tags: ["amr", "nodes", "segments", "rotation", "transform"],
+  },
+  {
+    id: "checklist",
+    name: "Integration Checklist",
+    description:
+      "Step-by-step checklist for software configuration and mechanical setup when integrating a new AMR into production.",
+    path: "/tools/checklist",
+    icon: "checklist",
+    category: "amr",
+    status: "coming-soon",
+    tags: ["amr", "integration", "checklist", "production", "configuration"],
+  },
+  {
+    id: "pdi",
+    name: "PDI Check Sheet Generator",
+    description:
+      "Upload an Excel template, answer extracted questions through a guided UI, and generate a correctly named and filled check sheet.",
+    path: "/tools/pdi",
+    icon: "pdi",
+    category: "utility",
+    status: "funding-cancelled",
+    tags: ["pdi", "excel", "inspection", "generator", "check sheet"],
+  },
 ];
 
 /**
