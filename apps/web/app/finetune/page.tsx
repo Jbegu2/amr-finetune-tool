@@ -129,7 +129,7 @@ const S: Record<string, CSSProperties> = {
   sectionTitle: { fontWeight: 600, marginBottom: 10, fontSize: 14, color: "#374151", textTransform: "uppercase", letterSpacing: "0.02em" },
   subLabel: { fontSize: 12, color: COLORS.text, marginBottom: 6 },
   input: { border: "1px solid #e2e8f0", borderRadius: 6, padding: "8px 10px", fontSize: 14, width: 85, transition: "border-color 0.15s, box-shadow 0.15s", background: "#fff" },
-  inputFull: { border: "1px solid #e2e8f0", borderRadius: 6, padding: "8px 10px", fontSize: 14, width: "100%", transition: "border-color 0.15s, box-shadow 0.15s", background: "#fff" },
+  inputFull: { border: "1px solid #e2e8f0", borderRadius: 6, padding: "8px 10px", fontSize: 14, width: "100%", boxSizing: "border-box" as const, transition: "border-color 0.15s, box-shadow 0.15s", background: "#fff" },
   btnBase: { borderRadius: 6, padding: "8px 14px", cursor: "pointer", fontSize: 13, fontWeight: 500, border: "1px solid transparent", transition: "background-color 0.15s, opacity 0.15s, transform 0.1s" },
   table: { width: "100%", borderCollapse: "collapse", fontSize: 12 },
   th: { textAlign: "left", borderBottom: "1px solid #e2e8f0", padding: "6px 4px", fontSize: 11, fontWeight: 600, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.03em" },
@@ -600,11 +600,15 @@ const CustomPointsEditor = memo(function CustomPointsEditor({ customPoints, sequ
   if (!sequence || sequence.length === 0) return null;
 
   return (
-    <section aria-labelledby={sectionId} style={{ marginTop: 20, padding: 12, border: "1px solid #fdba74", background: "#fffbeb", borderRadius: 6 }}>
-      <h2 id={sectionId} style={{ ...S.sectionTitle, color: "#c2410c", marginBottom: 6 }}>Custom Points</h2>
-      <p style={{ ...S.subLabel, marginBottom: 10 }}>Add points relative to generated sequence</p>
-      <button onClick={handleAdd} style={{ ...btnStyle('secondary'), background: "#fff", borderColor: "#fdba74", color: "#c2410c", marginBottom: 10 }} aria-label="Add new custom point">+ Add Custom</button>
-      <div role="list" aria-label="Custom points list" style={{ display: "grid", gap: 8 }}>
+    <section aria-labelledby={sectionId} style={{ marginTop: 16, padding: 10, border: "1px solid #fdba74", background: "#fffbeb", borderRadius: 6 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+        <div>
+          <h2 id={sectionId} style={{ ...S.sectionTitle, color: "#c2410c", marginBottom: 2, fontSize: 13 }}>Custom Points</h2>
+          <p style={{ ...S.subLabel, margin: 0, fontSize: 11 }}>Add points relative to generated sequence</p>
+        </div>
+        <button onClick={handleAdd} style={{ ...btnStyle('secondary'), background: "#fff", borderColor: "#fdba74", color: "#c2410c", padding: "4px 10px", fontSize: 12 }} aria-label="Add new custom point">+ Add</button>
+      </div>
+      <div role="list" aria-label="Custom points list" style={{ display: "grid", gap: 6 }}>
         {customPoints.map((cp, idx) => <CustomPointRow key={cp.id} point={cp} sequence={sequence} index={idx} totalPoints={customPoints.length} onUpdate={updates => handleUpdate(cp.id, updates)} onDelete={() => handleDelete(cp.id)} />)}
       </div>
     </section>
@@ -619,22 +623,22 @@ const CustomPointRow = memo(function CustomPointRow({ point, sequence, index, to
   const handleFlip = useCallback(() => onUpdate({ flipped: !point.flipped }), [point.flipped, onUpdate]);
 
   return (
-    <div role="listitem" aria-label={`Custom point ${index + 1} of ${totalPoints}: ${point.name}`} style={{ background: "#fff", borderRadius: 5, padding: 10, border: "1px solid #fdba74" }}>
-      <div style={{ display: "flex", gap: 6, marginBottom: 6 }}>
+    <div role="listitem" aria-label={`Custom point ${index + 1} of ${totalPoints}: ${point.name}`} style={{ background: "#fff", borderRadius: 4, padding: 8, border: "1px solid #fdba74" }}>
+      <div style={{ display: "flex", gap: 6, marginBottom: 4 }}>
         <label htmlFor={`${rowId}-name`} style={S.srOnly as CSSProperties}>Custom point name</label>
-        <input id={`${rowId}-name`} style={{ ...S.inputFull, fontSize: 13 }} value={point.name} onChange={handleNameChange} placeholder="Name" />
-        <button onClick={onDelete} style={{ ...btnStyle('danger'), padding: "4px 8px" }} aria-label={`Delete custom point ${point.name}`}>×</button>
+        <input id={`${rowId}-name`} style={{ ...S.inputFull, fontSize: 12, padding: "5px 8px" }} value={point.name} onChange={handleNameChange} placeholder="Name" />
+        <button onClick={onDelete} style={{ ...btnStyle('danger'), padding: "3px 7px", fontSize: 12 }} aria-label={`Delete custom point ${point.name}`}>×</button>
       </div>
       <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
         <div style={{ flex: "1 1 auto", minWidth: 0 }}>
           <label htmlFor={`${rowId}-ref`} style={S.srOnly as CSSProperties}>Reference point</label>
-          <select id={`${rowId}-ref`} style={{ ...S.inputFull, padding: "6px 8px", fontSize: 12 }} value={point.referenceIndex} onChange={handleRefChange} aria-label="Reference point">{sequence.map((_, idx) => <option key={idx} value={idx}>{getPointInfo(idx).label}</option>)}</select>
+          <select id={`${rowId}-ref`} style={{ ...S.inputFull, padding: "5px 8px", fontSize: 11 }} value={point.referenceIndex} onChange={handleRefChange} aria-label="Reference point">{sequence.map((_, idx) => <option key={idx} value={idx}>{getPointInfo(idx).label}</option>)}</select>
         </div>
-        <div style={{ width: 70, flexShrink: 0 }}>
+        <div style={{ width: 65, flexShrink: 0 }}>
           <label htmlFor={`${rowId}-dist`} style={S.srOnly as CSSProperties}>Distance in mm</label>
-          <input id={`${rowId}-dist`} style={{ ...S.inputFull, width: "100%", fontSize: 12 }} placeholder="mm" value={point.distanceMm} onChange={handleDistChange} inputMode="decimal" />
+          <input id={`${rowId}-dist`} style={{ ...S.inputFull, width: "100%", fontSize: 11, padding: "5px 6px" }} placeholder="mm" value={point.distanceMm} onChange={handleDistChange} inputMode="decimal" />
         </div>
-        <button onClick={handleFlip} title={point.flipped ? "Reversed" : "Forward"} aria-label={`Flip direction`} aria-pressed={point.flipped} style={{ ...btnStyle('secondary'), padding: 0, width: 32, height: 32, flexShrink: 0, display: "flex", justifyContent: "center", alignItems: "center", background: point.flipped ? "#fef2f2" : "#f8fafc", borderColor: point.flipped ? "#fecaca" : "#e2e8f0", color: point.flipped ? COLORS.danger : "#64748b" }}><FlipIcon /></button>
+        <button onClick={handleFlip} title={point.flipped ? "Reversed" : "Forward"} aria-label={`Flip direction`} aria-pressed={point.flipped} style={{ ...btnStyle('secondary'), padding: 0, width: 28, height: 28, flexShrink: 0, display: "flex", justifyContent: "center", alignItems: "center", background: point.flipped ? "#fef2f2" : "#f8fafc", borderColor: point.flipped ? "#fecaca" : "#e2e8f0", color: point.flipped ? COLORS.danger : "#64748b" }}><FlipIcon /></button>
       </div>
     </div>
   );
@@ -1023,13 +1027,21 @@ const PointsLayer = memo(function PointsLayer({ rawPoints, sequence, computedCus
 });
 
 // --- 5.5 SavedRunsManager ---
-interface SavedRunsManagerProps { savedRuns: SavedRun[]; onUpdate: (runs: SavedRun[]) => void; announce: (message: string) => void; }
+interface SavedRunsManagerProps {
+  savedRuns: SavedRun[];
+  onUpdate: (runs: SavedRun[]) => void;
+  onRename: (id: string, currentName: string) => void;
+  onDelete: (id: string, name: string) => void;
+  announce: (message: string) => void;
+}
 
-const SavedRunsManager = memo(function SavedRunsManager({ savedRuns, onUpdate, announce }: SavedRunsManagerProps) {
+const SavedRunsManager = memo(function SavedRunsManager({ savedRuns, onUpdate, onRename, onDelete, announce }: SavedRunsManagerProps) {
   const sectionId = useId();
-  const handleToggle = useCallback((id: string) => { const run = savedRuns.find(r => r.id === id); onUpdate(savedRuns.map(r => r.id === id ? { ...r, visible: !r.visible } : r)); if (run) announce(`${run.name} ${run.visible ? 'hidden' : 'shown'}`); }, [savedRuns, onUpdate, announce]);
-  const handleRename = useCallback((id: string) => { const run = savedRuns.find(r => r.id === id); if (!run) return; const n = window.prompt("Rename:", run.name); if (n) { onUpdate(savedRuns.map(r => r.id === id ? { ...r, name: n } : r)); announce(`Renamed to ${n}`); } }, [savedRuns, onUpdate, announce]);
-  const handleDelete = useCallback((id: string) => { const run = savedRuns.find(r => r.id === id); if (run && window.confirm(`Delete "${run.name}"?`)) { onUpdate(savedRuns.filter(r => r.id !== id)); announce(`${run.name} deleted`); } }, [savedRuns, onUpdate, announce]);
+  const handleToggle = useCallback((id: string) => {
+    const run = savedRuns.find(r => r.id === id);
+    onUpdate(savedRuns.map(r => r.id === id ? { ...r, visible: !r.visible } : r));
+    if (run) announce(`${run.name} ${run.visible ? 'hidden' : 'shown'}`);
+  }, [savedRuns, onUpdate, announce]);
 
   return (
     <section aria-labelledby={sectionId} style={{ marginTop: 20 }}>
@@ -1040,27 +1052,40 @@ const SavedRunsManager = memo(function SavedRunsManager({ savedRuns, onUpdate, a
         </p>
       ) : (
         <div role="list" aria-label={`${savedRuns.length} saved runs`} style={{ display: "grid", gap: 8 }}>
-          {savedRuns.map((r, idx) => <SavedRunCard key={r.id} run={r} index={idx} total={savedRuns.length} onToggle={handleToggle} onRename={handleRename} onDelete={handleDelete} />)}
+          {savedRuns.map((r, idx) => <SavedRunCard key={r.id} run={r} index={idx} total={savedRuns.length} onToggle={handleToggle} onRename={() => onRename(r.id, r.name)} onDelete={() => onDelete(r.id, r.name)} />)}
         </div>
       )}
     </section>
   );
 });
 
-interface SavedRunCardProps { run: SavedRun; index: number; total: number; onToggle: (id: string) => void; onRename: (id: string) => void; onDelete: (id: string) => void; }
+interface SavedRunCardProps {
+  run: SavedRun;
+  index: number;
+  total: number;
+  onToggle: (id: string) => void;
+  onRename: () => void;
+  onDelete: () => void;
+}
 
 const SavedRunCard = memo(function SavedRunCard({ run, index, total, onToggle, onRename, onDelete }: SavedRunCardProps) {
   const checkboxId = useId();
   const handleToggle = useCallback(() => onToggle(run.id), [run.id, onToggle]);
-  const handleRename = useCallback(() => onRename(run.id), [run.id, onRename]);
-  const handleDelete = useCallback(() => onDelete(run.id), [run.id, onDelete]);
   const [expanded, setExpanded] = useState(false);
+  const toggleExpand = useCallback(() => setExpanded(e => !e), []);
 
   return (
     <article role="listitem" aria-label={`Saved run ${index + 1} of ${total}: ${run.name}`} style={{ border: "1px solid #e2e8f0", borderRadius: 6, background: "#fff" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", borderBottom: expanded ? "1px solid #f1f5f9" : "none" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <button onClick={() => setExpanded(!expanded)} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, fontSize: 12, color: "#9ca3af" }}>{expanded ? "▼" : "▶"}</button>
+        <div 
+          onClick={toggleExpand} 
+          style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", userSelect: "none", flex: 1 }}
+          role="button"
+          aria-expanded={expanded}
+          tabIndex={0}
+          onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleExpand(); } }}
+        >
+          <span style={{ fontSize: 12, color: "#9ca3af" }} aria-hidden="true">{expanded ? "▼" : "▶"}</span>
           <h3 style={{ fontWeight: 500, margin: 0, fontSize: 13 }}>{run.name}</h3>
         </div>
         <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
@@ -1068,8 +1093,8 @@ const SavedRunCard = memo(function SavedRunCard({ run, index, total, onToggle, o
             <input id={checkboxId} type="checkbox" checked={!!run.visible} onChange={handleToggle} style={{ width: 14, height: 14 }} />
             <span>Show</span>
           </label>
-          <button onClick={handleRename} style={{ ...btnStyle('secondary'), padding: "3px 8px", fontSize: 11 }} aria-label={`Rename ${run.name}`}>Rename</button>
-          <button onClick={handleDelete} style={{ ...btnStyle('danger'), padding: "3px 8px" }} aria-label={`Delete ${run.name}`}>×</button>
+          <button onClick={onRename} style={{ ...btnStyle('secondary'), padding: "3px 8px", fontSize: 11 }} aria-label={`Rename ${run.name}`}>Rename</button>
+          <button onClick={onDelete} style={{ ...btnStyle('danger'), padding: "3px 8px" }} aria-label={`Delete ${run.name}`}>×</button>
         </div>
       </div>
       {expanded && <div style={{ padding: 10 }}><SavedTabs run={run} /></div>}
@@ -1129,6 +1154,111 @@ const SavedTabs = memo(function SavedTabs({ run }: { run: SavedRun }) {
 const ABBLogo = memo(() => <svg width="120" height="40" viewBox="0 0 120 40" role="img" aria-label="ABB Logo"><rect width="120" height="40" fill={COLORS.primary} /><text x="10" y="28" fontFamily="Arial" fontSize="24" fontWeight="bold" fill="white">JBB</text></svg>);
 const FlipIcon = memo(() => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M4 8h16M16 4l4 4-4 4" /><path d="M20 16H4M8 12l-4 4 4 4" /></svg>);
 
+// --- 5.7 Modal Components ---
+const modalOverlayStyle: CSSProperties = {
+  position: "fixed",
+  inset: 0,
+  background: "rgba(0, 0, 0, 0.5)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  zIndex: 100,
+};
+
+const modalBoxStyle: CSSProperties = {
+  background: "#fff",
+  borderRadius: 10,
+  padding: 20,
+  minWidth: 320,
+  maxWidth: 400,
+  boxShadow: "0 10px 40px rgba(0,0,0,0.2)",
+};
+
+interface PromptModalProps {
+  title: string;
+  defaultValue?: string;
+  placeholder?: string;
+  onConfirm: (value: string) => void;
+  onCancel: () => void;
+}
+
+const PromptModal = memo(function PromptModal({ title, defaultValue = "", placeholder, onConfirm, onCancel }: PromptModalProps) {
+  const [value, setValue] = useState(defaultValue);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+    inputRef.current?.select();
+  }, []);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (value.trim()) onConfirm(value.trim());
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      onCancel();
+    }
+  }, [value, onConfirm, onCancel]);
+
+  const handleSubmit = useCallback(() => {
+    if (value.trim()) onConfirm(value.trim());
+  }, [value, onConfirm]);
+
+  return (
+    <div style={modalOverlayStyle} onClick={onCancel} role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div style={modalBoxStyle} onClick={e => e.stopPropagation()} onKeyDown={handleKeyDown}>
+        <h3 id="modal-title" style={{ margin: 0, marginBottom: 12, fontSize: 16, fontWeight: 600 }}>{title}</h3>
+        <input
+          ref={inputRef}
+          type="text"
+          value={value}
+          onChange={e => setValue(e.target.value)}
+          placeholder={placeholder}
+          style={{ ...S.inputFull, marginBottom: 16 }}
+        />
+        <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+          <button onClick={onCancel} style={btnStyle('secondary')}>Cancel</button>
+          <button onClick={handleSubmit} style={{ ...btnStyle('primary'), opacity: value.trim() ? 1 : 0.5 }} disabled={!value.trim()}>OK</button>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+interface ConfirmModalProps {
+  title: string;
+  message: string;
+  confirmLabel?: string;
+  danger?: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+}
+
+const ConfirmModal = memo(function ConfirmModal({ title, message, confirmLabel = "Confirm", danger = false, onConfirm, onCancel }: ConfirmModalProps) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCancel();
+      else if (e.key === "Enter") onConfirm();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onConfirm, onCancel]);
+
+  return (
+    <div style={modalOverlayStyle} onClick={onCancel} role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+      <div style={modalBoxStyle} onClick={e => e.stopPropagation()}>
+        <h3 id="confirm-title" style={{ margin: 0, marginBottom: 8, fontSize: 16, fontWeight: 600 }}>{title}</h3>
+        <p style={{ margin: 0, marginBottom: 16, fontSize: 14, color: "#6b7280" }}>{message}</p>
+        <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+          <button onClick={onCancel} style={btnStyle('secondary')}>Cancel</button>
+          <button onClick={onConfirm} style={danger ? { ...btnStyle('primary'), background: COLORS.danger, borderColor: COLORS.danger } : btnStyle('primary')}>{confirmLabel}</button>
+        </div>
+      </div>
+    </div>
+  );
+});
+
 // ==========================================
 // 6. MAIN COMPONENT
 // ==========================================
@@ -1147,6 +1277,14 @@ export default function FineTuneWeb() {
   const [saved, setSaved] = useState<SavedRun[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { announcement, announce } = useAnnounce();
+  
+  // Modal state
+  const [modal, setModal] = useState<{
+    type: 'save' | 'rename' | 'delete';
+    defaultValue?: string;
+    targetId?: string;
+    targetName?: string;
+  } | null>(null);
 
   // Load saved runs from localStorage
   useEffect(() => {
@@ -1297,8 +1435,13 @@ export default function FineTuneWeb() {
   }, [announce]);
   
   const handleSave = useCallback(() => {
-    const name = window.prompt("Name run:", "Station_");
-    if (name && fineTuned && sequence) {
+    if (fineTuned && sequence) {
+      setModal({ type: 'save', defaultValue: '' });
+    }
+  }, [fineTuned, sequence]);
+  
+  const handleSaveConfirm = useCallback((name: string) => {
+    if (fineTuned && sequence) {
       setSaved(prev => [{
         id: `${Date.now()}`,
         name,
@@ -1310,7 +1453,36 @@ export default function FineTuneWeb() {
       }, ...prev]);
       announce(`Saved as "${name}"`);
     }
+    setModal(null);
   }, [fineTuned, sequence, customPoints, announce]);
+  
+  const handleRename = useCallback((id: string, currentName: string) => {
+    setModal({ type: 'rename', targetId: id, defaultValue: currentName, targetName: currentName });
+  }, []);
+  
+  const handleRenameConfirm = useCallback((newName: string) => {
+    if (modal?.targetId) {
+      setSaved(prev => prev.map(r => r.id === modal.targetId ? { ...r, name: newName } : r));
+      announce(`Renamed to "${newName}"`);
+    }
+    setModal(null);
+  }, [modal, announce]);
+  
+  const handleDelete = useCallback((id: string, name: string) => {
+    setModal({ type: 'delete', targetId: id, targetName: name });
+  }, []);
+  
+  const handleDeleteConfirm = useCallback(() => {
+    if (modal?.targetId) {
+      setSaved(prev => prev.filter(r => r.id !== modal.targetId));
+      announce(`${modal.targetName} deleted`);
+    }
+    setModal(null);
+  }, [modal, announce]);
+  
+  const handleModalCancel = useCallback(() => {
+    setModal(null);
+  }, []);
   
   // Zoom around a point in screen coordinates
   const handleZoom = useCallback((factor: number, screenX: number, screenY: number) => {
@@ -1349,12 +1521,9 @@ export default function FineTuneWeb() {
       <a href="#main-content" className="skip-link" style={S.skipLink as CSSProperties}>Skip to main content</a>
       <ScreenReaderAnnouncer message={announcement} />
       
-      <header style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 24, paddingBottom: 16, borderBottom: "1px solid #e5e7eb" }}>
+      <header style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, paddingBottom: 12, borderBottom: "1px solid #e5e7eb" }}>
         <ABBLogo />
-        <div>
-          <h1 style={{ ...S.h2, fontSize: 26, marginBottom: 2 }}>AMR Fine-Tuning Tool</h1>
-          <p style={{ ...S.headerSub, fontSize: 13 }}>I didn&apos;t like using the Excel sheet - JB</p>
-        </div>
+        <h1 style={{ ...S.h2, fontSize: 22, margin: 0 }}>AMR Fine-Tuning Tool</h1>
       </header>
       
       <main id="main-content" className="ft-grid" style={S.grid}>
@@ -1392,9 +1561,39 @@ export default function FineTuneWeb() {
             onCenter={handleCenter}
             onResize={setCanvasSize}
           />
-          <SavedRunsManager savedRuns={saved} onUpdate={setSaved} announce={announce} />
+          <SavedRunsManager savedRuns={saved} onUpdate={setSaved} onRename={handleRename} onDelete={handleDelete} announce={announce} />
         </div>
       </main>
+      
+      {/* Modals */}
+      {modal?.type === 'save' && (
+        <PromptModal
+          title="Save Point Data"
+          defaultValue={modal.defaultValue}
+          placeholder="Name Data"
+          onConfirm={handleSaveConfirm}
+          onCancel={handleModalCancel}
+        />
+      )}
+      {modal?.type === 'rename' && (
+        <PromptModal
+          title="Rename"
+          defaultValue={modal.defaultValue}
+          placeholder="Enter new name..."
+          onConfirm={handleRenameConfirm}
+          onCancel={handleModalCancel}
+        />
+      )}
+      {modal?.type === 'delete' && (
+        <ConfirmModal
+          title="Delete"
+          message={`Are you sure you want to delete "${modal.targetName}"?`}
+          confirmLabel="Delete"
+          danger
+          onConfirm={handleDeleteConfirm}
+          onCancel={handleModalCancel}
+        />
+      )}
     </div>
   );
 }
