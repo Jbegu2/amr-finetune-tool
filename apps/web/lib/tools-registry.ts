@@ -80,7 +80,7 @@ export const toolsRegistry: Tool[] = [
     path: "/tools/checklist",
     icon: "checklist",
     category: "amr",
-    status: "coming-soon",
+    status: "active",
     tags: ["amr", "integration", "checklist", "production", "configuration"],
   },
   {
