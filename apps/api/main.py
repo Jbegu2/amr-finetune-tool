@@ -1,4 +1,4 @@
-﻿from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
 from typing import List
@@ -29,11 +29,6 @@ class Point(BaseModel):
 class FineTuneRequest(BaseModel):
     points: List[Point] = Field(..., min_length=1, max_length=10)
     segments: List[float] = Field(default_factory=list)
-    
-    @field_validator('segments')
-    @classmethod
-    def check_segments(cls, v):
-        return [float(s) if isinstance(s, (int, float)) else 0.0 for s in v]
 
 @app.get("/")
 def read_root():
