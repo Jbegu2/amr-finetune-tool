@@ -40,6 +40,17 @@ export const toolsRegistry: Tool[] = [
     tags: ["amr", "layout", "points", "visualization"],
   },
   {
+    id: "checklist",
+    name: "Integration Checklist",
+    description:
+      "Step-by-step checklist for software configuration and mechanical setup when integrating a new AMR into production.",
+    path: "/tools/checklist",
+    icon: "checklist",
+    category: "utility",
+    status: "beta",
+    tags: ["amr", "integration", "checklist", "production", "configuration"],
+  },
+  {
     id: "painkiller",
     name: "Thomas's Pain Killer",
     description:
@@ -73,17 +84,6 @@ export const toolsRegistry: Tool[] = [
     tags: ["amr", "nodes", "segments", "rotation", "transform"],
   },
   {
-    id: "checklist",
-    name: "Integration Checklist",
-    description:
-      "Step-by-step checklist for software configuration and mechanical setup when integrating a new AMR into production.",
-    path: "/tools/checklist",
-    icon: "checklist",
-    category: "amr",
-    status: "active",
-    tags: ["amr", "integration", "checklist", "production", "configuration"],
-  },
-  {
     id: "pdi",
     name: "PDI Check Sheet Generator",
     description:
@@ -91,7 +91,7 @@ export const toolsRegistry: Tool[] = [
     path: "/tools/pdi",
     icon: "pdi",
     category: "utility",
-    status: "funding-cancelled",
+    status: "beta",
     tags: ["pdi", "excel", "inspection", "generator", "check sheet"],
   },
 ];

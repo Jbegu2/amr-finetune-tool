@@ -173,7 +173,7 @@ function StatusBadge({ status }: { status: Tool["status"] }) {
     beta: {
       bg: `${colors.warning}20`,
       text: colors.warning,
-      label: "Beta",
+      label: "Under Construction - In Beta",
     },
   };
 
@@ -217,7 +217,7 @@ function getIconBackground(icon: Tool["icon"]): string {
 }
 
 function ToolCard({ tool }: { tool: Tool }) {
-  const isActive = tool.status === "active";
+  const isActive = tool.status === "active" || tool.status === "beta";
 
   const card = (
     <article

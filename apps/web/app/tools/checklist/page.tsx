@@ -52,8 +52,8 @@ const DEFAULT_CHECKLIST_ITEMS: ChecklistItem[] = [
   { id: "scalance-id", name: "Set Scalance ID", hasNotes: false },
   { id: "mac-address", name: "Document AMR MAC address", hasNotes: true },
   { id: "vehicle-ip", name: "Document Vehicle IP Address", hasNotes: true },
-  { id: "front-laser", name: "Front Laser Scanner", hasNotes: false },
-  { id: "rear-laser", name: "Rear Laser Scanner", hasNotes: false },
+  { id: "front-laser", name: "Front Laser Scanner", hasNotes: true },
+  { id: "rear-laser", name: "Rear Laser Scanner", hasNotes: true },
   { id: "front-hmi", name: "Front HMI", hasNotes: false },
   { id: "rear-hmi", name: "Rear HMI", hasNotes: false },
   { id: "vslam-pair", name: "Pair to Vslam Server", hasNotes: false },
@@ -122,7 +122,7 @@ const S: Record<string, CSSProperties> = {
     background: colors.bgPage,
     borderRadius: 6,
     border: `1px solid ${colors.borderLight}`,
-    marginBottom: spacing.md,
+    marginBottom: spacing.lg,
   },
   checklistItemCompleted: {
     background: `${ACCENT_COLOR}08`,
@@ -225,13 +225,10 @@ const S: Record<string, CSSProperties> = {
     gap: spacing.md,
     flexWrap: "wrap",
   },
-  backLink: {
-    fontSize: 13,
-    color: colors.textMuted,
-    textDecoration: "none",
+  backButton: {
     display: "inline-flex",
     alignItems: "center",
-    gap: 4,
+    gap: spacing.sm,
   },
 };
 
@@ -310,6 +307,55 @@ function AccentButton({
       }}
     >
       {children}
+    </button>
+  );
+}
+
+// Professional custom checkbox
+function Checkbox({
+  checked,
+  onChange,
+  ariaLabel,
+}: {
+  checked: boolean;
+  onChange: () => void;
+  ariaLabel?: string;
+}) {
+  return (
+    <button
+      role="checkbox"
+      aria-checked={checked}
+      aria-label={ariaLabel}
+      onClick={onChange}
+      style={{
+        width: 20,
+        height: 20,
+        borderRadius: 4,
+        border: `2px solid ${checked ? ACCENT_COLOR : colors.border}`,
+        background: checked ? ACCENT_COLOR : colors.bgCard,
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 0,
+        flexShrink: 0,
+        transition: "background-color 0.15s, border-color 0.15s",
+      }}
+    >
+      {checked && (
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke={colors.white}
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      )}
     </button>
   );
 }
@@ -517,25 +563,25 @@ const SetupPhase = memo(function SetupPhase({
 
       <div style={S.card}>
         <div style={S.formGroup}>
-          <label htmlFor={amrInputId} style={S.label}>AMR Number *</label>
+          <label htmlFor={amrInputId} style={S.label}>AMR Vehicle ID</label>
           <input
             id={amrInputId}
             type="text"
             value={amrNumber}
             onChange={(e) => setAmrNumber(e.target.value)}
-            placeholder="e.g., AMR-001"
+            placeholder="e.g. 001"
             style={styles.input}
           />
         </div>
 
         <div style={S.formGroup}>
-          <label htmlFor={projectInputId} style={S.label}>Project / Site *</label>
+          <label htmlFor={projectInputId} style={S.label}>Project / Site</label>
           <input
             id={projectInputId}
             type="text"
             value={projectSite}
             onChange={(e) => setProjectSite(e.target.value)}
-            placeholder="e.g., Warehouse Alpha"
+            placeholder="e.g. DTP"
             style={styles.input}
           />
         </div>
@@ -622,8 +668,11 @@ const ActiveChecklist = memo(function ActiveChecklist({
 
   return (
     <div>
-      <button onClick={onBack} style={S.backLink as CSSProperties}>
-        ← Back to List
+      <button onClick={onBack} style={{ ...buttonStyle("secondary"), ...S.backButton }}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        Back to List
       </button>
 
       <div style={{ marginTop: spacing.lg, marginBottom: spacing.xl }}>
@@ -647,12 +696,10 @@ const ActiveChecklist = memo(function ActiveChecklist({
               ...(item.completed ? S.checklistItemCompleted : {}),
             }}
           >
-            <input
-              type="checkbox"
+            <Checkbox
               checked={item.completed}
               onChange={() => handleToggle(item.id)}
-              style={S.checkbox}
-              aria-label={`Mark ${item.name} as ${item.completed ? "incomplete" : "complete"}`}
+              ariaLabel={`Mark ${item.name} as ${item.completed ? "incomplete" : "complete"}`}
             />
             <div style={S.itemContent}>
               <div style={{ display: "flex", alignItems: "center", gap: spacing.md }}>

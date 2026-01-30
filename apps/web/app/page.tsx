@@ -133,6 +133,89 @@ export default function Home() {
           </article>
         </Link>
 
+        {/* Integration Checklist Card - Under Construction */}
+        <article
+          style={{
+            border: `1px dashed ${colors.border}`,
+            borderRadius: 10,
+            padding: spacing["2xl"],
+            background: colors.bgCard,
+            opacity: 0.7,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+              marginBottom: spacing.lg,
+            }}
+          >
+            <div
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 10,
+                background: `${colors.warning}15`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke={colors.warning}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M9 11l2 2 4-4" />
+                <path d="M9 17h6" />
+              </svg>
+            </div>
+            <span
+              style={{
+                fontSize: 10,
+                fontWeight: 600,
+                padding: "2px 6px",
+                borderRadius: 4,
+                background: `${colors.warning}20`,
+                color: colors.warning,
+                textTransform: "uppercase",
+                letterSpacing: "0.02em",
+              }}
+            >
+              Under Construction - In Beta
+            </span>
+          </div>
+          <h2
+            style={{
+              fontSize: 18,
+              fontWeight: 600,
+              color: colors.textPrimary,
+              marginBottom: spacing.sm,
+              textTransform: "none",
+              letterSpacing: 0,
+            }}
+          >
+            Integration Checklist
+          </h2>
+          <p
+            style={{
+              fontSize: 14,
+              color: colors.textMuted,
+              lineHeight: 1.5,
+              margin: 0,
+            }}
+          >
+            Step-by-step checklist for software and mechanical setup when integrating a new AMR into production.
+          </p>
+        </article>
+
         {/* Thomas's Pain Killer Card - Coming Soon */}
         <article
           style={{
@@ -383,89 +466,6 @@ export default function Home() {
           </p>
         </article>
 
-        {/* Integration Checklist Card - Coming Soon */}
-        <article
-          style={{
-            border: `1px dashed ${colors.border}`,
-            borderRadius: 10,
-            padding: spacing["2xl"],
-            background: colors.bgCard,
-            opacity: 0.7,
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "space-between",
-              marginBottom: spacing.lg,
-            }}
-          >
-            <div
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 10,
-                background: `${colors.warning}15`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke={colors.warning}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <path d="M9 11l2 2 4-4" />
-                <path d="M9 17h6" />
-              </svg>
-            </div>
-            <span
-              style={{
-                fontSize: 10,
-                fontWeight: 600,
-                padding: "2px 6px",
-                borderRadius: 4,
-                background: colors.borderLight,
-                color: colors.textMuted,
-                textTransform: "uppercase",
-                letterSpacing: "0.02em",
-              }}
-            >
-              Coming Soon
-            </span>
-          </div>
-          <h2
-            style={{
-              fontSize: 18,
-              fontWeight: 600,
-              color: colors.textPrimary,
-              marginBottom: spacing.sm,
-              textTransform: "none",
-              letterSpacing: 0,
-            }}
-          >
-            Integration Checklist
-          </h2>
-          <p
-            style={{
-              fontSize: 14,
-              color: colors.textMuted,
-              lineHeight: 1.5,
-              margin: 0,
-            }}
-          >
-            Step-by-step checklist for software and mechanical setup when integrating a new AMR into production.
-          </p>
-        </article>
-
         {/* PDI Check Sheet Generator Card - Funding Cancelled */}
         <article
           style={{
@@ -518,13 +518,13 @@ export default function Home() {
                 fontWeight: 600,
                 padding: "2px 6px",
                 borderRadius: 4,
-                background: colors.borderLight,
-                color: colors.textMuted,
+                background: `${colors.warning}20`,
+                color: colors.warning,
                 textTransform: "uppercase",
                 letterSpacing: "0.02em",
               }}
             >
-              Funding Cancelled - TBD
+              Under Construction - Beta
             </span>
           </div>
           <h2
