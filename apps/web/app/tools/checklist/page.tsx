@@ -207,10 +207,10 @@ const S: Record<string, CSSProperties> = {
     display: "flex",
     alignItems: "center",
     gap: spacing.md,
-    padding: "8px 10px",
+    padding: "10px 12px",
     background: colors.bgPage,
-    borderRadius: 5,
-    marginBottom: spacing.sm,
+    borderRadius: 6,
+    marginBottom: spacing.md,
     cursor: "pointer",
     userSelect: "none",
   },
@@ -587,19 +587,35 @@ const SetupPhase = memo(function SetupPhase({
         </div>
 
         <div style={S.formGroup}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: spacing.md }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: spacing.lg }}>
             <span style={S.label}>Checklist Items ({selectedItems.size} selected)</span>
-            <div style={{ display: "flex", gap: spacing.sm }}>
-              <button onClick={handleSelectAll} style={{ ...buttonStyle("secondary"), padding: "4px 10px", fontSize: 11 }}>
+            <div style={{ display: "flex", gap: spacing.md }}>
+              <button 
+                onClick={handleSelectAll} 
+                style={{ 
+                  ...buttonStyle("secondary"), 
+                  padding: "6px 14px", 
+                  fontSize: 13,
+                  fontWeight: 500,
+                }}
+              >
                 Select All
               </button>
-              <button onClick={handleClearAll} style={{ ...buttonStyle("secondary"), padding: "4px 10px", fontSize: 11 }}>
+              <button 
+                onClick={handleClearAll} 
+                style={{ 
+                  ...buttonStyle("secondary"), 
+                  padding: "6px 14px", 
+                  fontSize: 13,
+                  fontWeight: 500,
+                }}
+              >
                 Clear All
               </button>
             </div>
           </div>
 
-          <div style={{ maxHeight: 300, overflowY: "auto", border: `1px solid ${colors.borderLight}`, borderRadius: 6, padding: spacing.sm }}>
+          <div style={{ maxHeight: 480, overflowY: "auto", border: `1px solid ${colors.border}`, borderRadius: 8, padding: spacing.lg }}>
             {DEFAULT_CHECKLIST_ITEMS.map((item) => (
               <label key={item.id} style={S.setupItem}>
                 <input
@@ -608,9 +624,9 @@ const SetupPhase = memo(function SetupPhase({
                   onChange={() => handleToggleItem(item.id)}
                   style={S.setupCheckbox}
                 />
-                <span style={{ fontSize: 13, color: colors.textPrimary }}>{item.name}</span>
+                <span style={{ fontSize: 14, color: colors.textPrimary, fontWeight: 450 }}>{item.name}</span>
                 {item.hasNotes && (
-                  <span style={{ fontSize: 10, color: ACCENT_COLOR, marginLeft: "auto" }}>+ notes</span>
+                  <span style={{ fontSize: 11, color: ACCENT_COLOR, marginLeft: "auto", fontWeight: 500 }}>+ notes</span>
                 )}
               </label>
             ))}

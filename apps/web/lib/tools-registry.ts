@@ -47,7 +47,7 @@ export const toolsRegistry: Tool[] = [
     path: "/tools/checklist",
     icon: "checklist",
     category: "utility",
-    status: "beta",
+    status: "active",
     tags: ["amr", "integration", "checklist", "production", "configuration"],
   },
   {
@@ -58,7 +58,7 @@ export const toolsRegistry: Tool[] = [
     path: "/tools/painkiller",
     icon: "painkiller",
     category: "utility",
-    status: "coming-soon",
+    status: "beta",
     tags: ["synoas", "nodes", "segments", "compatibility", "validation"],
   },
   {

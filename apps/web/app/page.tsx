@@ -133,22 +133,28 @@ export default function Home() {
           </article>
         </Link>
 
-        {/* Integration Checklist Card - Under Construction */}
-        <article
-          style={{
-            border: `1px dashed ${colors.border}`,
-            borderRadius: 10,
-            padding: spacing["2xl"],
-            background: colors.bgCard,
-            opacity: 0.7,
-          }}
+        {/* Integration Checklist Card */}
+        <Link
+          href="/tools/checklist"
+          style={{ textDecoration: "none" }}
         >
-          <div
+          <article
             style={{
-              display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "space-between",
-              marginBottom: spacing.lg,
+              border: `1px solid ${colors.border}`,
+              borderRadius: 10,
+              padding: spacing["2xl"],
+              background: colors.bgCard,
+              boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+              transition: "box-shadow 0.15s, border-color 0.15s",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
+              e.currentTarget.style.borderColor = colors.warning;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.04)";
+              e.currentTarget.style.borderColor = colors.border;
             }}
           >
             <div
@@ -160,6 +166,7 @@ export default function Home() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                marginBottom: spacing.lg,
               }}
             >
               <svg
@@ -177,46 +184,32 @@ export default function Home() {
                 <path d="M9 17h6" />
               </svg>
             </div>
-            <span
+            <h2
               style={{
-                fontSize: 10,
+                fontSize: 18,
                 fontWeight: 600,
-                padding: "2px 6px",
-                borderRadius: 4,
-                background: `${colors.warning}20`,
-                color: colors.warning,
-                textTransform: "uppercase",
-                letterSpacing: "0.02em",
+                color: colors.textPrimary,
+                marginBottom: spacing.sm,
+                textTransform: "none",
+                letterSpacing: 0,
               }}
             >
-              Under Construction - In Beta
-            </span>
-          </div>
-          <h2
-            style={{
-              fontSize: 18,
-              fontWeight: 600,
-              color: colors.textPrimary,
-              marginBottom: spacing.sm,
-              textTransform: "none",
-              letterSpacing: 0,
-            }}
-          >
-            Integration Checklist
-          </h2>
-          <p
-            style={{
-              fontSize: 14,
-              color: colors.textMuted,
-              lineHeight: 1.5,
-              margin: 0,
-            }}
-          >
-            Step-by-step checklist for software and mechanical setup when integrating a new AMR into production.
-          </p>
-        </article>
+              Integration Checklist
+            </h2>
+            <p
+              style={{
+                fontSize: 14,
+                color: colors.textMuted,
+                lineHeight: 1.5,
+                margin: 0,
+              }}
+            >
+              Step-by-step checklist for software and mechanical setup when integrating a new AMR into production.
+            </p>
+          </article>
+        </Link>
 
-        {/* Thomas's Pain Killer Card - Coming Soon */}
+        {/* Thomas's Pain Killer Card - Under Construction */}
         <article
           style={{
             border: `1px dashed ${colors.border}`,
@@ -267,13 +260,13 @@ export default function Home() {
                 fontWeight: 600,
                 padding: "2px 6px",
                 borderRadius: 4,
-                background: colors.borderLight,
-                color: colors.textMuted,
+                background: `${colors.warning}20`,
+                color: colors.warning,
                 textTransform: "uppercase",
                 letterSpacing: "0.02em",
               }}
             >
-              Coming Soon
+              Under Construction - In Beta
             </span>
           </div>
           <h2
