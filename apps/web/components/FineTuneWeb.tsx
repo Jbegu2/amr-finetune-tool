@@ -52,6 +52,16 @@ type PointTypeInfo = {
   index: number;
 };
 
+type WorkingState = {
+  points: PointInput[];
+  segments: string[];
+  customPoints: CustomPoint[];
+  fineTuned: Fine | null;
+  sequence: PtA[] | null;
+  zoom: number;
+  pan: { x: number; y: number };
+};
+
 // ==========================================
 // 2. CONSTANTS & CONFIGURATION
 // ==========================================
@@ -79,6 +89,7 @@ const CONFIG = {
   MAX_POINTS: 10,
   STORAGE_WARNING_SIZE: 4_000_000,
   LOCALSTORAGE_KEY: "ft_saved_runs",
+  LOCALSTORAGE_WORKING_KEY: "ft_working_state",
   INPUT_DEBOUNCE_MS: 150,
   KEYBOARD_PAN_STEP: 20,
 } as const;
@@ -1234,6 +1245,25 @@ export default function FineTuneWeb() {
       } catch { /* ignore parse errors */ }
     }
   }, []);
+
+  // Load working state from localStorage on mount
+  useEffect(() => {
+    const raw = typeof window !== 'undefined' 
+      ? window.localStorage.getItem(CONFIG.LOCALSTORAGE_WORKING_KEY) 
+      : null;
+    if (raw) {
+      try {
+        const state: WorkingState = JSON.parse(raw);
+        if (state.points?.length) setPoints(state.points);
+        if (state.segments?.length) setSegments(state.segments);
+        if (state.customPoints?.length) setCustomPoints(state.customPoints);
+        if (state.fineTuned) setFineTuned(state.fineTuned);
+        if (state.sequence) setSequence(state.sequence);
+        if (state.zoom) setZoom(state.zoom);
+        if (state.pan) setPan(state.pan);
+      } catch { /* ignore parse errors */ }
+    }
+  }, []);
   
   const debouncedSaved = useDebounce(saved, 500);
   useEffect(() => { 
@@ -1246,6 +1276,24 @@ export default function FineTuneWeb() {
       }
     } 
   }, [debouncedSaved]);
+
+  // Persist working state to localStorage
+  const workingState: WorkingState = useMemo(() => ({
+    points, segments, customPoints, fineTuned, sequence, zoom, pan
+  }), [points, segments, customPoints, fineTuned, sequence, zoom, pan]);
+
+  const debouncedWorking = useDebounce(workingState, 500);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(
+          CONFIG.LOCALSTORAGE_WORKING_KEY, 
+          JSON.stringify(debouncedWorking)
+        );
+      } catch { /* ignore storage errors */ }
+    }
+  }, [debouncedWorking]);
   
   useEffect(() => {
     const need = Math.max(0, points.length - 1);
