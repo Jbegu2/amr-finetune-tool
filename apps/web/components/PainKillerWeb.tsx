@@ -538,7 +538,7 @@ export default function PainKillerWeb() {
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingFileName, setProcessingFileName] = useState("");
-  const [visibleCount, setVisibleCount] = useState(CONFIG.PAGE_SIZE);
+  const [visibleCount, setVisibleCount] = useState<number>(CONFIG.PAGE_SIZE);
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
